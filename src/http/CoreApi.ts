@@ -38,6 +38,21 @@ export default class CoreApi extends Client {
   }
 
   /**
+   * Get-Метод получения списка котов сгруппированного по группам [allByLetter]{@link https://meowle.qa-fintech.ru/api/core/api-docs-ui/#/%D0%9F%D0%BE%D0%B8%D1%81%D0%BA/get_cats_allByLetter}
+   * @param limit=10 - число записей
+   */
+  static async allByLetter(limit: number = 10): Promise<AxiosResponse<{ groups: { title: string; cats: Cat[] }[] }>> {
+    let response: AxiosResponse;
+    try {
+      const params = new URLSearchParams({ limit: limit.toString() });
+      response = await this.coreApiHttpClient.get(`${this.api}/allByLetter?${params}`);
+    } catch (error) {
+      console.error(error);
+    }
+    return response;
+  }
+
+  /**
    * Get-Метод поиска кота по части начала имени [search-pattern]{@link https://meowle.qa-fintech.ru/api/core/api-docs-ui/#/%D0%9F%D0%BE%D0%B8%D1%81%D0%BA/get_cats_search_pattern}
    * @param name - имя
    * @param limit=10 - число записей
