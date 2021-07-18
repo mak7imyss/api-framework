@@ -49,7 +49,7 @@ describe('[HM] Поиск и удаление кота', async () => {
 
     const response = await CoreApi.removeCat(actCat.id);
 
-    allure.logStep(`Поиск удаленного кота по id ${actCat.id}`);
+    allure.logStep(`Запрос на удаление удаленного кота: ${actCat.name}`);
     allure.testAttachment(
       'Информация о запросе',
       JSON.stringify(response.data, null, 2),
