@@ -19,6 +19,7 @@ describe('[HM] Поиск и удаление кота', async () => {
   after(() => {
     console.log('Завершение тестирования, ознакомьтесь с отчетом');
   });
+
   it('1. Поиск случайного кота', async () => {
     console.info('Тест 1 ☑', 'Запрашиваем список котов сгруппированный по группам с 1 котом в группе');
 
@@ -41,7 +42,7 @@ describe('[HM] Поиск и удаление кота', async () => {
           JSON.stringify(actCat, null, 2),
           'application/json');
 
-        assert.ok(response.status === 200, `Имя случайного кота: [${actCat.name}]`);
+        assert.ok(response.status === 200, `Текущий статус код ${response.status}`);
       },
     );
   });
@@ -59,7 +60,7 @@ describe('[HM] Поиск и удаление кота', async () => {
           JSON.stringify(response.data, null, 2),
           'application/json',
         );
-        assert.ok(response.status === status, `Актуальный статус код ${response.status}`,
+        assert.ok(response.status === status, `Текущий статус код ${response.status}`,
         );
       });
   });
