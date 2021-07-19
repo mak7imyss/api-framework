@@ -25,17 +25,17 @@ describe('[HM] Поиск и удаление кота', async () => {
 
     await allure.step('Находим случайного кота',
       async () => {
-        console.warn('Тест 1 ☑', 'Выполняется GET запрос /allByLetter');
+        console.warn('Тест 1 ☑', 'Выполняем GET запрос /allByLetter');
         const response = await CoreApi.allByLetter(1);
         if (response.status === 404) {
           console.error('Тест 1 ☒', 'Ошибка выполнения GET запроса /allByLetter');
           assert.fail(`Кот не найден! Response:\n ${JSON.stringify(response.data, null, 2)}`);
         }
 
-        console.debug('Тест 1 ☑', 'Получен ответ на GET запрос /allByLetter');
-        console.info('Тест 1 ☑', 'Случайным образом выбирается кота из списка');
+        console.debug('Тест 1 ☑', 'Получаем ответ на GET запрос /allByLetter');
+        console.info('Тест 1 ☑', 'Случайным образом выбираем кота из списка');
         const num = getRandomInt(response.data.groups.length);
-        console.info('Тест 1 ☑', 'Получена информация о случайно выбранном коте');
+        console.info('Тест 1 ☑', 'Получаем информацию о случайно выбранном коте');
         actCat = response.data.groups[num].cats[0];
         allure.testAttachment(
           'Информация о коте',
@@ -52,9 +52,9 @@ describe('[HM] Поиск и удаление кота', async () => {
 
     await allure.step(`Удаление кота: ${actCat.name}`,
       async () => {
-        console.warn('Тест 2 ☑', 'Выполняется DELETE запрос /remove');
+        console.warn('Тест 2 ☑', 'Выполняем DELETE запрос /remove');
         const response = await CoreApi.removeCat(actCat.id);
-        console.debug('Тест 2 ☑', 'Получен ответ на DELETE запрос /remove');
+        console.debug('Тест 2 ☑', 'Получаем ответ на DELETE запрос /remove');
         allure.testAttachment(
           'Информация об удаленном коте',
           JSON.stringify(response.data, null, 2),
@@ -68,9 +68,9 @@ describe('[HM] Поиск и удаление кота', async () => {
   it('3. Проверка что кота больше нет ', async () => {
     await allure.step(`Удаление удаленного кота с id ${actCat.id}`,
       async () => {
-        console.warn('Тест 3 ☑', 'Выполняется DELETE запрос /remove');
+        console.warn('Тест 3 ☑', 'Выполняем DELETE запрос /remove');
         const response = await CoreApi.removeCat(actCat.id);
-        console.debug('Тест 3 ☑', 'Получен ответ на DELETE запрос /remove');
+        console.debug('Тест 3 ☑', 'Получаем ответ на DELETE запрос /remove');
         allure.testAttachment(
           'Информация о запросе',
           JSON.stringify(response.data, null, 2),
