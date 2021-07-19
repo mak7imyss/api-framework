@@ -58,11 +58,11 @@ describe('[HM] Поиск кота и добавление дислайков', 
         current_dislikes = actCat.dislikes;
           allure.testAttachment(
           'Информация о количестве дислайков',
-          JSON.stringify(`likes: ${actCat.dislikes}`, null, 2),
+          JSON.stringify(`dislikes: ${actCat.dislikes}`, null, 2),
           'application/json',
         );
         //Честно, не совсем понимаю что проверять в обычном парсе данных
-        assert.ok(current_dislikes === actCat.dislikes, `Значения не совпадают ${current_dislikes} / ${actCat.likes}`,
+        assert.ok(current_dislikes === actCat.dislikes, `Значения не совпадают ${current_dislikes} / ${actCat.dislikes}`,
         );
       });
 
@@ -73,8 +73,8 @@ describe('[HM] Поиск кота и добавление дислайков', 
     //     console.warn('Тест 2 ☑', 'Выполняем GET запрос /getCatById');
     //     const response = await CoreApi.getCatById(actCat.id);
     //     console.debug('Тест 2 ☑', 'Получаем ответ на GET запрос /getCatById');
-    //     console.info('Тест 2 ☑', 'Сохраняем количесво лайков у кота');
-    //     current_likes = response.data.cat.likes;
+    //     console.info('Тест 2 ☑', 'Сохраняем количесво дислайков у кота');
+    //     current_dislikes = response.data.cat.dislikes;
     //     assert.ok(response.status === 200, `Текущий статус код ${response.status}`);
     //   });
   });
