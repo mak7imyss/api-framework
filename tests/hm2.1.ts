@@ -56,8 +56,7 @@ describe('[HM] Поиск кота и добавление лайков', async 
       async () => {
         console.warn('Тест 2 ☑', 'Выполняем извлечение количества лайков');
         current_likes = actCat.likes;
-        console.debug('Тест 2 ☑', 'Сохраняем количество лайков у кота');
-        allure.testAttachment(
+ac        allure.testAttachment(
           'Информация о количестве лайков',
           JSON.stringify(`likes: ${actCat.likes}`, null, 2),
           'application/json',
