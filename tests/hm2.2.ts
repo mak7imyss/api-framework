@@ -5,7 +5,7 @@ import { allure } from 'allure-mocha/runtime';
 import LikeApi from '../src/http/LikeApi';
 
 const getRandomInt = (max: number) => Math.floor(Math.random() * max);
-let actCat: Cat;
+let expectedCat: Cat;
 let count_dislikes: number = 7;
 let current_dislikes: number;
 
@@ -29,7 +29,7 @@ describe('[HM] Поиск кота и добавление дислайков', 
     await allure.step('Находим случайного кота',
       async () => {
         console.warn('Тест 1 ☑', 'Выполняем GET запрос /allByLetter');
-        const response = await CoreApi.allByLetter(1);
+        const response = await CoreApi.getAllCarsByLetter(1);
         if (response.status === 404) {
           console.error('Тест 1 ☒', 'Ошибка выполнения GET запроса /allByLetter');
           assert.fail(`Кот не найден! Response:\n ${JSON.stringify(response.data, null, 2)}`);
@@ -39,10 +39,10 @@ describe('[HM] Поиск кота и добавление дислайков', 
         console.info('Тест 1 ☑', 'Случайным образом выбираем кота из списка');
         const num = getRandomInt(response.data.groups.length);
         console.info('Тест 1 ☑', 'Получаем информацию о случайно выбранном коте');
-        actCat = response.data.groups[num].cats[0];
+        expectedCat = response.data.groups[num].cats[0];
         allure.testAttachment(
           'Информация о коте',
-          JSON.stringify(actCat, null, 2),
+          JSON.stringify(expectedCat, null, 2),
           'application/json');
 
         assert.ok(response.status === 200, `Текущий статус код ${response.status}`);
@@ -52,26 +52,26 @@ describe('[HM] Поиск кота и добавление дислайков', 
 
   it('2. Получение и сохранение дислайков', async () => {
 
-    await allure.step(`Получение дислайков у кота: ${actCat.name}`,
+    await allure.step(`Получение дислайков у кота: ${expectedCat.name}`,
       async () => {
         console.warn('Тест 2 ☑', 'Выполняем извлечение количества дислайков');
-        current_dislikes = actCat.dislikes;
+        current_dislikes = expectedCat.dislikes;
           allure.testAttachment(
           'Информация о количестве дислайков',
-          JSON.stringify(`dislikes: ${actCat.dislikes}`, null, 2),
+          JSON.stringify(`dislikes: ${expectedCat.dislikes}`, null, 2),
           'application/json',
         );
         //Честно, не совсем понимаю что проверять в обычном парсе данных
-        assert.ok(current_dislikes === actCat.dislikes, `Значения не совпадают ${current_dislikes} / ${actCat.dislikes}`,
+        assert.ok(current_dislikes === expectedCat.dislikes, `Значения не совпадают ${current_dislikes} / ${expectedCat.dislikes}`,
         );
       });
 
-    // // Вариант с запросом по id, но не вижу смысла, т.к. все уже есть в actCat
+    // // Вариант с запросом по id, но не вижу смысла, т.к. все уже есть в expectedCat
     // const status: number = 200;
-    // await allure.step(`Получение дислайков у кота: ${actCat.name}`,
+    // await allure.step(`Получение дислайков у кота: ${expectedCat.name}`,
     //   async () => {
     //     console.warn('Тест 2 ☑', 'Выполняем GET запрос /getCatById');
-    //     const response = await CoreApi.getCatById(actCat.id);
+    //     const response = await CoreApi.getCatById(expectedCat.id);
     //     console.debug('Тест 2 ☑', 'Получаем ответ на GET запрос /getCatById');
     //     console.info('Тест 2 ☑', 'Сохраняем количесво дислайков у кота');
     //     current_dislikes = response.data.cat.dislikes;
@@ -81,13 +81,13 @@ describe('[HM] Поиск кота и добавление дислайков', 
 
   it('3. Добавление дислайков коту ', async () => {
     const data = { like: null, dislike: true };
-    await allure.step(`Добавление дислайков коту: ${actCat.id}`,
+    await allure.step(`Добавление дислайков коту: ${expectedCat.id}`,
       async () => {
         console.warn('Тест 3 ☑', `Выполняем POST запрос /likes ${count_dislikes} раз`);
         for (let i = 1; i < count_dislikes; i++) {
-          await LikeApi.likes(actCat.id, data);
+          await LikeApi.likes(expectedCat.id, data);
         }
-        const response = await LikeApi.likes(actCat.id, data);
+        const response = await LikeApi.likes(expectedCat.id, data);
         console.debug('Тест 3 ☑', 'Выполнен POST запрос /likes');
         allure.testAttachment(
           'Информация о запросе',
@@ -100,10 +100,10 @@ describe('[HM] Поиск кота и добавление дислайков', 
   });
 
   it('4. Проверка количества дислайков у кота ', async () => {
-    await allure.step(` Проверка количества дислайков у кота: ${actCat.id}`,
+    await allure.step(` Проверка количества дислайков у кота: ${expectedCat.id}`,
       async () => {
         console.warn('Тест 4 ☑', 'Выполняем GET запрос /getCatById');
-        const response = await CoreApi.getCatById(actCat.id);
+        const response = await CoreApi.getCatById(expectedCat.id);
         console.debug('Тест 4 ☑', 'Получаем ответ на GET запрос /getCatById');
         console.info('Тест 4 ☑', 'Сравниваем текущее количесво дислайков у кота и ожидаемое');
         assert.ok(response.status === 200, `Текущий статус код ${response.status}`);
