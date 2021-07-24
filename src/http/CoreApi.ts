@@ -19,7 +19,11 @@ export default class CoreApi extends Client {
       const params = new URLSearchParams({ id: id.toString() });
       response = await this.coreApiHttpClient.get(`${this.api}/get-by-id?${params}`);
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError(error)) {
+        response = error.response;
+      } else {
+        console.error(error);
+      }
     }
     return response;
   }
@@ -41,7 +45,7 @@ export default class CoreApi extends Client {
    * Get-Метод получения списка котов сгруппированного по группам [allByLetter]{@link https://meowle.qa-fintech.ru/api/core/api-docs-ui/#/%D0%9F%D0%BE%D0%B8%D1%81%D0%BA/get_cats_allByLetter}
    * @param limit=10 - число записей
    */
-  static async allByLetter(limit: number = 10): Promise<AxiosResponse<{ groups: { title: string; cats: Cat[] }[] }>> {
+  static async getAllCarsByLetter(limit: number = 10): Promise<AxiosResponse<{ groups: { title: string; cats: Cat[] }[] }>> {
     let response: AxiosResponse;
     try {
       const params = new URLSearchParams({ limit: limit.toString() });
